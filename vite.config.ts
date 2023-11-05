@@ -9,5 +9,19 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/jp-zh": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/jp-zh/, ""),
+      },
+      "/nhk": {
+        target: "http://localhost:3002",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/nhk/, ""),
+      },
+    },
+  },
   plugins: [react()],
 });
