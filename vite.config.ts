@@ -12,14 +12,19 @@ export default defineConfig({
   server: {
     proxy: {
       "/jp-zh": {
-        target: "http://localhost:3001",
+        target: "http://127.0.0.1:3001",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/jp-zh/, ""),
+        rewrite: (path) => path.replace(/^\/jp-zh/, "/dict/jpzh"),
       },
       "/nhk": {
-        target: "http://localhost:3002",
+        target: "http://127.0.0.1:3002",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/nhk/, ""),
+        rewrite: (path) => path.replace(/^\/nhk/, "/dict/nhk"),
+      },
+      "/anki": {
+        target: "http://127.0.0.1:8765",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/anki/, "/"),
       },
     },
   },

@@ -1,31 +1,64 @@
 import { Button, TextArea } from "@radix-ui/themes";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 
 interface WordListProps {
-  onSubmitEdit: (wordList: string[]) => void;
+  onSubmitEdit: (
+    deckName: string,
+    modelName: string,
+    tagList: string[],
+    wordList: string[]
+  ) => void;
 }
 
 function WordList(props: WordListProps) {
   const { onSubmitEdit } = props;
-  const [wordListText, setWordListText] = useState("上\n下");
-
-  const onWordListTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setWordListText(event.currentTarget.value);
-  };
+  const [deckName, setDeckName] = useState("anki test");
+  const [modelName, setModelName] = useState("full word");
+  const [tagList, setTagList] = useState("新编日语第一册");
+  const [wordList, setWordLis] = useState("");
 
   const onEditSubmitButtonClick = () => {
-    onSubmitEdit?.(wordListText.split("\n"));
+    onSubmitEdit?.(
+      deckName,
+      modelName,
+      tagList.split("\n"),
+      wordList.split("\n")
+    );
   };
 
   return (
-    <div className="h-full w-full flex flex-col">
+    <div className="flex h-full w-full flex-col gap-2">
+      <p>deck name</p>
+      <TextArea
+        rows={1}
+        value={deckName}
+        onChange={(event) => {
+          setDeckName(event.currentTarget.value);
+        }}
+      />
+      <p>model name</p>
+      <TextArea
+        value={modelName}
+        onChange={(event) => {
+          setModelName(event.currentTarget.value);
+        }}
+      />
+      <p>tags</p>
+      <TextArea
+        value={tagList}
+        onChange={(event) => {
+          setTagList(event.currentTarget.value);
+        }}
+      />
       <p>word list</p>
       <TextArea
         className="flex-1"
-        placeholder="Reply to comment…"
-        value={wordListText}
-        onChange={onWordListTextChange}
+        value={wordList}
+        onChange={(event) => {
+          setWordLis(event.currentTarget.value);
+        }}
       />
+
       <Button onClick={onEditSubmitButtonClick}>Submit</Button>
     </div>
   );

@@ -1,0 +1,32 @@
+export type JpzhType = Partial<{
+  priority: string;
+  word: string;
+  wordWithSymbol: string;
+  kana: string;
+  spell: string;
+  tune: string;
+  origin: string;
+  type: string;
+  description: string;
+  descriptionJp: string;
+  descriptionZh: string;
+  examJp: string;
+  examZh: string;
+  examFull: string;
+}>;
+export type NhkType = { word: string } & Partial<{
+  title: string;
+  type: string;
+  dataList: string;
+  pronLink: string;
+  pronWord: string;
+  pronHtml: string;
+  ptclLink: string;
+  ptclWord: string;
+  ptclHtml: string;
+  egLink: string;
+  egWord: string;
+  egHtml: string;
+}>;
+export type DataList = [JpzhType[], NhkType[]];
+export type AudioItem = { html?: string; link?: string; fileName?: string };
