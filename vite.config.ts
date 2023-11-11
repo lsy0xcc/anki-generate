@@ -14,12 +14,12 @@ export default defineConfig({
       "/jp-zh": {
         target: "http://127.0.0.1:3001",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/jp-zh/, "/dict/jpzh"),
+        rewrite: (path) => path.replace(/^\/jp-zh/, ""),
       },
       "/nhk": {
         target: "http://127.0.0.1:3002",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/nhk/, "/dict/nhk"),
+        rewrite: (path) => path.replace(/^\/nhk/, ""),
       },
       "/anki": {
         target: "http://127.0.0.1:8765",

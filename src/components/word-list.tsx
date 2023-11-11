@@ -21,8 +21,8 @@ function WordList(props: WordListProps) {
     onSubmitEdit?.(
       deckName,
       modelName,
-      tagList.split("\n"),
-      wordList.split("\n")
+      tagList.split("\n").filter((e) => e),
+      wordList.split("\n").filter((e) => e)
     );
   };
 

@@ -44,7 +44,7 @@ export const convertResult = (result: DataList) => {
   jpzhResult.priority = `<div class="jpzh-priority">${"*".repeat(
     priority
   )}</div>`;
-  const nhkTemp = result[1].map((nhkItem, index) => {
+  const nhkTemp = result[1].map((nhkItem) => {
     const {
       title,
       dataList,
@@ -58,17 +58,17 @@ export const convertResult = (result: DataList) => {
     const pron: AudioItem = {
       html: pronHtml,
       link: NHK_AUDIO_PREFIX + pronLink,
-      fileName: generateFileName(title, index, "pron"),
+      fileName: pronLink?.replaceAll(/\//g, "_"),
     };
     const ptcl: AudioItem = {
       html: ptclHtml,
       link: NHK_AUDIO_PREFIX + ptclLink,
-      fileName: generateFileName(title, index, "ptcl"),
+      fileName: ptclLink?.replaceAll(/\//g, "_"),
     };
     const eg: AudioItem = {
       html: egHtml,
       link: NHK_AUDIO_PREFIX + egLink,
-      fileName: generateFileName(title, index, "eg"),
+      fileName: egLink?.replaceAll(/\//g, "_"),
     };
 
     return {
@@ -93,20 +93,23 @@ export const convertResult = (result: DataList) => {
     .map((e) => {
       const pron = e.pron ? audioTemplate("pron", true, e.pron) : "";
       const ptcl = e.ptcl ? audioTemplate("ptcl", true, e.ptcl) : "";
-      const eg = e.eg ? audioTemplate("ptcl", true, e.eg) : "";
+      const eg = e.eg ? audioTemplate("eg", true, e.eg) : "";
       return `<div class="nhk-full-audio-item">${pron}${ptcl}${eg}</div>`;
     })
     .join("");
   const pronAudioContent = nhkTemp
     .map((e) => {
-      const pron = e.pron ? audioTemplate("pron", true, e.pron) : "";
+      const pron = e.pron ? audioTemplate("pron", false, e.pron) : "";
       return `<div class="nhk-pron-audio-item">${pron}</div>`;
     })
     .join("");
   const egAudioContent = nhkTemp
     .map((e) => {
-      const eg = e.eg ? audioTemplate("ptcl", false, e.eg) : "";
-      return `<div class="nhk-eg-audio-item">${eg}</div>`;
+      const eg = e.eg ? audioTemplate("eg", true, e.eg) : "";
+      return `<div class="nhk-eg-audio-item">${eg.replace(
+        /(<span class="tune-[012] tune-[nqb]">.<\/span>)+/,
+        "~"
+      )}</div>`;
     })
     .join("");
   const fullAudio = fullAudioContent
