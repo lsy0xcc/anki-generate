@@ -12,9 +12,9 @@ interface WordListProps {
 
 function WordList(props: WordListProps) {
   const { onSubmitEdit } = props;
-  const [deckName, setDeckName] = useState("anki test");
+  const [deckName, setDeckName] = useState("新编日语单词");
   const [modelName, setModelName] = useState("full word");
-  const [tagList, setTagList] = useState("新编日语第一册");
+  const [tagList, setTagList] = useState("新编日语");
   const [wordList, setWordLis] = useState("");
 
   const onEditSubmitButtonClick = () => {

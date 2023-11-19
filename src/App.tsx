@@ -15,6 +15,7 @@ function App() {
   const [wordList, setWordList] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedList, setSelectedList] = useState<boolean[][]>([]);
+  const [errorWordList, setErrorWordList] = useState<string[]>([]);
 
   const {
     runAsync: runGetWordData,
@@ -42,8 +43,11 @@ function App() {
       setModelName(modelName);
       setEditing(false);
       setCurrentIndex(0);
-      await requestAuth();
-      await beforeSelectWordData(wordList[0]);
+      setErrorWordList([]);
+      setTimeout(async () => {
+        await requestAuth();
+        await beforeSelectWordData(wordList[0]);
+      });
     }
   };
 
@@ -52,14 +56,14 @@ function App() {
   };
 
   const beforeSelectWordData = async (word: string) => {
-    const result = await runGetWordData(word);
-    if (
-      result &&
-      result.reduce((prev, curr) => prev && curr.length === 1, true)
-    ) {
-      await addNote(result);
-      await endSelectWordData();
-    }
+    await runGetWordData(word);
+    // if (
+    //   result &&
+    //   result.reduce((prev, curr) => prev && curr.length === 1, true)
+    // ) {
+    //   await addNote(result);
+    //   await endSelectWordData();
+    // }
   };
 
   const endSelectWordData = async () => {
@@ -89,13 +93,21 @@ function App() {
 
   const addNote = async (result: DataList) => {
     console.log(deckName, modelName, tagList, convertResult(result));
-    const ankiResult = await runAddToAnki(
-      deckName,
-      modelName,
-      tagList,
-      convertResult(result)
-    );
-    console.log(ankiResult);
+    if (result && result[0] && result[1]) {
+      if (result[0].length > 0 || result[1].length > 0) {
+        const ankiResult = await runAddToAnki(
+          deckName,
+          modelName,
+          tagList,
+          convertResult(result)
+        );
+        console.log(ankiResult);
+      } else {
+        setErrorWordList([...errorWordList, wordList[currentIndex]]);
+      }
+    } else {
+      setErrorWordList([...errorWordList, wordList[currentIndex]]);
+    }
     await endSelectWordData();
   };
   return (
@@ -120,7 +132,15 @@ function App() {
           {getResultLoading || addToAnkiLoading ? (
             <div>loading</div>
           ) : editing ? (
-            <div className="flex-1">wait for edit</div>
+            errorWordList.length > 0 ? (
+              <div>
+                {errorWordList.map((e, index) => (
+                  <div key={index}>{e}</div>
+                ))}
+              </div>
+            ) : (
+              <div className="flex-1">wait for edit</div>
+            )
           ) : (
             <>
               <div className="flex h-full flex-1 gap-2 overflow-y-auto">
