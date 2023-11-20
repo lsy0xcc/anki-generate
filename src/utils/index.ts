@@ -170,7 +170,7 @@ export const generateFileName = (
 ) => {
   return `${title}_${type}_${index + 1}_${Math.random()
     .toString(36)
-    .substring(2)}.spx`;
+    .substring(2)}.mp3`;
 };
 
 export const audioTemplate = (
