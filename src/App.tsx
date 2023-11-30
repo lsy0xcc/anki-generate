@@ -56,7 +56,12 @@ function App() {
   };
 
   const beforeSelectWordData = async (word: string) => {
-    await runGetWordData(word);
+    const result = await runGetWordData(word);
+    setSelectedList(
+      result.map((e) =>
+        e.length === 1 ? [true] : new Array(e.length).fill(false)
+      )
+    );
     // if (
     //   result &&
     //   result.reduce((prev, curr) => prev && curr.length === 1, true)

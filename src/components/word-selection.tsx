@@ -16,7 +16,9 @@ function WordSelection<T extends Record<string, string>>(
 
   const [checkedList, setCheckedList] = useState<boolean[]>([]);
   useEffect(() => {
-    setCheckedList(new Array(dataList.length).fill(false));
+    setCheckedList(
+      dataList.length === 1 ? [true] : new Array(dataList.length).fill(false)
+    );
   }, [dataList]);
 
   const onCheckedChange = (index: number, value: boolean | string) => {

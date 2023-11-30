@@ -10,7 +10,7 @@ interface WordListDisplayProps {
 function WordListDisplay(props: WordListDisplayProps) {
   const { deckName, tagList, wordList, currentIndex, onCancelEdit } = props;
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col overflow-y-scroll">
       <div>{deckName}</div>
       <div>{tagList}</div>
       <div>
