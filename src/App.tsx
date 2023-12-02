@@ -1,11 +1,13 @@
 import WordList from "@/components/word-list";
 import { Button, Theme } from "@radix-ui/themes";
 import { useRequest } from "ahooks";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import WordListDisplay from "./components/word-list-display";
 import WordSelection from "./components/word-selection";
 import { DataList } from "./types";
 import { addToAnki, convertResult, getWordData, requestAuth } from "./utils";
+import AddWord from "./components/add-word";
+import jpzhConvert from "./utils/jzph-convert";
 
 function App() {
   const [editing, setEditing] = useState(true);
@@ -21,6 +23,7 @@ function App() {
     runAsync: runGetWordData,
     data: currentWordData,
     loading: getResultLoading,
+    mutate: changeData,
   } = useRequest(getWordData, {
     manual: true,
   });
@@ -115,6 +118,18 @@ function App() {
     }
     await endSelectWordData();
   };
+
+  const addDescription = async (data: any) => {
+    const resultData = await jpzhConvert(data);
+    changeData((old) => {
+      if (old) {
+        const result = [...old] as DataList;
+        result[0] = [...old[0], resultData];
+        return result;
+      }
+      return undefined;
+    });
+  };
   return (
     <Theme>
       <div className="flex h-screen w-screen">
@@ -147,10 +162,14 @@ function App() {
               <div className="flex-1">wait for edit</div>
             )
           ) : (
-            <>
+            <Fragment>
               <div className="flex h-full flex-1 gap-2 overflow-y-auto">
                 {currentWordData?.map((e, index) => {
-                  return (
+                  return e.length === 0 && index === 0 ? (
+                    <div className="h-full w-full min-w-[400px] overflow-y-auto">
+                      <AddWord onSubmit={addDescription}></AddWord>
+                    </div>
+                  ) : (
                     <WordSelection
                       dataList={e}
                       onCheckedListChanged={(list) => {
@@ -167,7 +186,7 @@ function App() {
                   Add
                 </Button>
               </div>
-            </>
+            </Fragment>
           )}
         </div>
       </div>

@@ -163,7 +163,7 @@ sep {
   font-weight: bold;
 }
 
-label {
+.display-item label {
   color: maroon;
   background-color: #ebf6f7;
   font-size: 0.8em;
@@ -234,4 +234,10 @@ LEMMA {
   background: #2ad;
   text-decoration: none;
   user-select: none;
+}
+
+@layer components {
+  .revert-tailwind {
+    all: revert;
+  }
 }

@@ -8,7 +8,7 @@ interface TableDisplayProps {
 function TableDisplay({ data, className }: TableDisplayProps) {
   const entries = Object.entries(data ?? {});
   return (
-    <Table.Root className={classNames("w-full", className)} variant="surface">
+    <Table.Root className={classNames("w-full display-item", className)} variant="surface">
       <Table.Header>
         <Table.Row>
           <Table.ColumnHeaderCell>key</Table.ColumnHeaderCell>
